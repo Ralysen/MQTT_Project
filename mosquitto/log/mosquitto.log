@@ -1,0 +1,15 @@
+1771794854: mosquitto version 2.1.2 starting
+1771794854: Config loaded from /mosquitto/config/mosquitto.conf.
+1771794854: Bridge support available.
+1771794854: Persistence support available.
+1771794854: TLS support available.
+1771794854: TLS-PSK support available.
+1771794854: Websockets support available.
+1771794854: Warning: File /mosquitto/config/passwd owner is not mosquitto. Future versions will refuse to load this file.To fix this, use `chown mosquitto /mosquitto/config/passwd`.
+
+1771794854: Warning: File /mosquitto/config/passwd group is not mosquitto. Future versions will refuse to load this file.
+
+1771794854: Plugin builtin-security has registered to receive 'basic-auth' events.
+1771794854: Opening ipv4 listen socket on port 1883.
+1771794854: Opening ipv6 listen socket on port 1883.
+1771794854: mosquitto version 2.1.2 running
