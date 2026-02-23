@@ -21,6 +21,15 @@ tasks:
     cmds:
       - npm run start
 
+  # --- Local development ---
+
+  local:up:
+    desc: Start infrastructure (db + mqtt) and run the app locally
+    cmds:
+      - docker compose up db mqtt -d
+      - task: migration:run
+      - task: dev
+
   # --- Database ---
 
   db:up:

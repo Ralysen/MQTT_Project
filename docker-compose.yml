@@ -20,13 +20,31 @@ services:
     networks:
       - app_network
 
+  app:
+    container_name: promedevusapp-dev
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    restart: always
+    env_file: .env
+    environment:
+      MQTT_HOST: mqtt
+      DB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+      mqtt:
+        condition: service_started
+    networks:
+      - app_network
+
   mqtt:
     container_name: promedevusmqtt-dev
     image: eclipse-mosquitto
     restart: always
     mem_limit: 256m
     ports:
-      - "8883:8883"
+      - "1883:1883"
     volumes:
       - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
       - ./mosquitto/config/passwd:/mosquitto/config/passwd
