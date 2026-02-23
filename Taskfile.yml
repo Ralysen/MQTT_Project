@@ -2,8 +2,50 @@ version: "3"
 
 tasks:
   install:
+    desc: Install npm dependencies
     cmds:
       - npm install
+
   dev:
+    desc: Start application in development mode
     cmds:
-    - npm run dev
+      - npm run dev
+
+  build:
+    desc: Compile TypeScript to dist/
+    cmds:
+      - npm run build
+
+  start:
+    desc: Start compiled application
+    cmds:
+      - npm run start
+
+  # --- Database ---
+
+  db:up:
+    desc: Start PostgreSQL container
+    cmds:
+      - docker compose up db -d
+
+  # --- Migrations ---
+
+  migration:run:
+    desc: Run all pending migrations
+    cmds:
+      - npm run migration:run
+
+  migration:revert:
+    desc: Revert last migration
+    cmds:
+      - npm run migration:revert
+
+  migration:show:
+    desc: Show status of all migrations
+    cmds:
+      - npm run migration:show
+
+  migration:generate:
+    desc: "Generate migration from entity changes. Usage: task migration:generate -- src/database/migrations/MigrationName"
+    cmds:
+      - npm run migration:generate -- {{.CLI_ARGS}}
