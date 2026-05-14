@@ -40,7 +40,10 @@ services:
 
   mqtt:
     container_name: promedevusmqtt-dev
-    image: emqx/nanomq:latest
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.nanomq
+    image: promedevus-nanomq
     restart: always
     mem_limit: 256m
     ports:
@@ -49,7 +52,6 @@ services:
       - ./nanomq/config/nanomq.conf:/etc/nanomq/nanomq.conf
       - ./nanomq/certs:/etc/nanomq/certs:ro
       - ./nanomq/log:/var/log/nanomq
-    command: ["nanomq", "start", "--conf", "/etc/nanomq/nanomq.conf"]
     networks:
       - app_network
 

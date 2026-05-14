@@ -1,0 +1,36 @@
+FROM ubuntu:22.04 AS builder
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    cmake git build-essential ninja-build \
+    libmbedtls-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Pin to a known-good release tag
+ARG NANOMQ_VERSION=0.21.9
+RUN git clone --depth 1 --branch v${NANOMQ_VERSION} \
+    https://github.com/emqx/nanomq.git /src/nanomq
+
+WORKDIR /src/nanomq/build
+
+RUN cmake .. \
+    -G Ninja \
+    -DNNG_ENABLE_TLS=ON \
+    -DMBEDTLS_ENABLE=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    && ninja -j$(nproc)
+
+# ── runtime image ──────────────────────────────────────────────────────────────
+FROM ubuntu:22.04
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libmbedtls14 \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /src/nanomq/build/nanomq/nanomq /usr/local/bin/nanomq
+
+RUN mkdir -p /etc/nanomq /var/log/nanomq
+
+EXPOSE 1883 8883 8081
+
+ENTRYPOINT ["nanomq", "start"]
+CMD ["--conf", "/etc/nanomq/nanomq.conf"]
