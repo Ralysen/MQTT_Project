@@ -40,17 +40,16 @@ services:
 
   mqtt:
     container_name: promedevusmqtt-dev
-    image: eclipse-mosquitto
+    image: emqx/nanomq:latest
     restart: always
     mem_limit: 256m
     ports:
       - "8883:8883"
     volumes:
-      - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
-      - ./mosquitto/config/passwd:/mosquitto/config/passwd
-      - ./mosquitto/data:/mosquitto/data
-      - ./mosquitto/log:/mosquitto/log
-      - ./mosquitto/certs:/mosquitto/certs
+      - ./nanomq/config/nanomq.conf:/etc/nanomq/nanomq.conf
+      - ./nanomq/certs:/etc/nanomq/certs:ro
+      - ./nanomq/log:/var/log/nanomq
+    command: ["nanomq", "start", "--conf", "/etc/nanomq/nanomq.conf"]
     networks:
       - app_network
 
