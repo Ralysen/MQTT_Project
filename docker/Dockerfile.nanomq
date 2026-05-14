@@ -1,6 +1,7 @@
 FROM ubuntu:22.04 AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
     cmake git build-essential ninja-build \
     libmbedtls-dev \
     && rm -rf /var/lib/apt/lists/*
